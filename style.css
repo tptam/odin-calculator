@@ -1,15 +1,67 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body, button {
     color: #b3f2ff;
-    font-size: 36px;
     font-family: "Courier Prime", monospace;
     background-color: #21303e;
 }
 
+body {
+    font-size: 48px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#calc-wrapper {
+    flex: none;
+    width: 75vmin;
+    height: 72vmin;
+}
+
 #display {
     border: 2px #b3f2ff solid;
+    height: 12vmin;
+    text-align: right;
+    padding-right: 3vmin;
+}
+
+#button-wrapper {
+    margin-top: 3vmin;
+    display: flex;
+}
+
+#number-wrapper {
+    flex: none;
+    width: 45vmin;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3vmin;
+}
+
+#control-wrapper {
+    flex: none;
+    width: 30vmin;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 3vmin;
 }
 
 button {
     border-style: solid;
     border-color: #b3f2ff;
+    font-size: 36px;
+    width: 12vmin;
+    height: 12vmin;
+    flex: none;
+}
+
+button.double {
+    width: 27vmin;
 }
