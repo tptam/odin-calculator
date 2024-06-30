@@ -162,17 +162,28 @@ function getResultString(num){
         return "nonsense @_@";
     } else if (!Number.isFinite(num)) {
         return "infinity 0_0";
-    }
-    if (num.toString().length <= MAX_DIGIT) {
-        return num.toString();
+    } else if (num > -1 * 10 ** (-MAX_DIGIT + 3) && num < 10 ** (-MAX_DIGIT + 2)) {
+        // too small abs
+        return roundScientific(num);
+    } else if (num >= 10 ** MAX_DIGIT || num <= -1 * 10 ** (MAX_DIGIT - 1)) {
+        // too large abs
+        return roundScientific(num);
     } else {
-        let scientific = num.toExponential();
-        if (scientific.length <= MAX_DIGIT) {
-            return scientific;
-        } else {
-            const parts = scientific.split(/[\.e]/);
-            const fractionDigits = MAX_DIGIT - (parts.at(0) + parts.at(-1)).length - 2;
-            return num.toExponential(fractionDigits);
-        }
+        return roundFraction(num);
     }
+}
+
+function roundScientific(num){
+    let scientific = num.toExponential();
+    if (scientific.length <= MAX_DIGIT) {
+        return scientific;
+    } else {
+        const parts = scientific.split(/[\.e]/);
+        const fractionDigits = MAX_DIGIT - (parts.at(0) + parts.at(-1)).length - 2;
+        return num.toExponential(fractionDigits);
+    }
+}
+
+function roundFraction(num) {
+    return num.toFixed(MAX_DIGIT).slice(0, MAX_DIGIT).split(/\.0*$/)[0];
 }
