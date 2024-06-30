@@ -1,11 +1,18 @@
 const MAX_DIGIT = 9;
 
+// State values
+const NUM1_INPUTTING = 1;
+const OP_INPUTTING = 2;
+const NUM2_INPUTTING = 3;
+
 let num1 = null;
 let num2 = null;
 let op = null;
 let lastButton;
+let state = NUM1_INPUTTING;
 
-let currentDisplay = 0;
+let currentDisplayValue = 0;
+
 
 const numberButtons = document.querySelectorAll("button.number");
 numberButtons.forEach(button => {
@@ -57,8 +64,8 @@ function inputEqual() {
     if (lastButton === "equal") {
         return;
     }
-    num2 = currentDisplay;
-    currentDisplay = operate(op, num1, num2);
+    num2 = currentDisplayValue;
+    currentDisplayValue = operate(op, num1, num2);
     num1 = null;
     num2 = null;
     op = null;
@@ -66,14 +73,14 @@ function inputEqual() {
 
 function inputOperator(input) {
     if (num1 === null) {
-        num1 = currentDisplay;
+        num1 = currentDisplayValue;
         op = input;
     } else if (lastButton === "operator"){
         op = input;
     } else {
-        num2 = currentDisplay;
-        currentDisplay = operate(op, num1, num2);
-        num1 = currentDisplay;
+        num2 = currentDisplayValue;
+        currentDisplayValue = operate(op, num1, num2);
+        num1 = currentDisplayValue;
         num2 = null;
         op = input;
     }
@@ -83,24 +90,24 @@ function clear() {
     num1 = null;
     num2 = null;
     op = null;
-    currentDisplay = 0;    
+    currentDisplayValue = 0;    
 }
 
 
 function inputNumber(num){
-    if (currentDisplay.toString().length > MAX_DIGIT) {
+    if (currentDisplayValue.toString().length > MAX_DIGIT) {
         return;
     }
     if (lastButton === "number") {
-        currentDisplay = currentDisplay * 10 + num;
+        currentDisplayValue = currentDisplayValue * 10 + num;
     } else {
-        currentDisplay = num;
+        currentDisplayValue = num;
     }
 }
 
 function updateDisplay() {
     const display = document.querySelector("#display");
-    display.textContent = currentDisplay;
+    display.textContent = getResultString(currentDisplayValue);
 }
 
 function operate(op, num1, num2) {
@@ -136,8 +143,8 @@ function getResultString(num){
     if (num === Infinity) {
         return "infinity 0_0";
     }
-    if (num.toString.length <= MAX_DIGIT) {
-        return num.toString;
+    if (num.toString().length <= MAX_DIGIT) {
+        return num.toString();
     } else {
         let scientific = num.toExponential();
         if (scientific.length <= MAX_DIGIT) {
