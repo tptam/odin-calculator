@@ -131,3 +131,21 @@ function multiply(num1, num2) {
 function divide(num1, num2) {
     return num1 / num2;
 }
+
+function getResultString(num){
+    if (num === Infinity) {
+        return "infinity 0_0";
+    }
+    if (num.toString.length <= MAX_DIGIT) {
+        return num.toString;
+    } else {
+        let scientific = num.toExponential();
+        if (scientific.length <= MAX_DIGIT) {
+            return scientific;
+        } else {
+            const parts = scientific.split(/[\.e]/);
+            const fractionDigits = MAX_DIGIT - (parts.at(0) + parts.at(-1)).length - 2;
+            return num.toExponential(fractionDigits);
+        }
+    }
+}
