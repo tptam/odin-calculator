@@ -54,6 +54,9 @@ equalButton.addEventListener(
 
 
 function inputEqual() {
+    if (lastButton === "equal") {
+        return;
+    }
     num2 = currentDisplay;
     currentDisplay = operate(op, num1, num2);
     num1 = null;
