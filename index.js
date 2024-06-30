@@ -42,6 +42,24 @@ clearButton.addEventListener(
     }
 );
 
+const equalButton = document.querySelector("#equal");
+equalButton.addEventListener(
+    "click",
+    (e) => {
+        inputEqual();
+        lastButton = "equal";
+        updateDisplay();
+    }
+);
+
+
+function inputEqual() {
+    num2 = currentDisplay;
+    currentDisplay = operate(op, num1, num2);
+    num1 = null;
+    num2 = null;
+    op = null;
+}
 
 function inputOperator(input) {
     if (num1 === null) {
