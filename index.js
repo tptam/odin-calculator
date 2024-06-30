@@ -17,6 +17,24 @@ numberButtons.forEach(button => {
     )
 });
 
+const clearButton = document.querySelector("#clear");
+clearButton.addEventListener(
+    "click",
+    (e) => {
+        clear();
+        updateDisplay();
+    }
+);
+
+
+function clear() {
+    num1 = null;
+    num2 = null;
+    op = null;
+    currentDisplay = 0;    
+}
+
+
 function inputNumber(num){
     if (Math.log10(currentDisplay) + 1 > MAX_DIGIT) {
         return;
