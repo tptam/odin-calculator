@@ -3,6 +3,7 @@ const MAX_DIGIT = 9;
 let num1 = null;
 let num2 = null;
 let op = null;
+let lastButton;
 
 let currentDisplay = 0;
 
@@ -12,6 +13,7 @@ numberButtons.forEach(button => {
         "click",
         (e) => {
             inputNumber(parseInt(e.target.value));
+            lastButton = "number";
             updateDisplay();
         }
     )
@@ -23,6 +25,7 @@ operatorButtons.forEach(button => {
         "click",
         (e) => {
             inputOperator(e.target.value);
+            lastButton = "operator";
             updateDisplay();
         }
     )
@@ -34,6 +37,7 @@ clearButton.addEventListener(
     "click",
     (e) => {
         clear();
+        lastButton = "clear";
         updateDisplay();
     }
 );
@@ -42,6 +46,8 @@ clearButton.addEventListener(
 function inputOperator(input) {
     if (num1 === null) {
         num1 = currentDisplay;
+        op = input;
+    } else if (lastButton === "operator"){
         op = input;
     } else {
         num2 = currentDisplay;
@@ -61,7 +67,7 @@ function clear() {
 
 
 function inputNumber(num){
-    if (Math.log10(currentDisplay) + 1 > MAX_DIGIT) {
+    if (currentDisplay.toString().length > MAX_DIGIT) {
         return;
     }
     if (currentDisplay === 0) {
