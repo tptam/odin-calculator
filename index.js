@@ -1,15 +1,19 @@
-function add(n1, n2) {
-    return n1 + n2;
+let num1;
+let num2;
+let op;
+
+function add(num1, num2) {
+    return num1 + num2;
 }
 
-function subtract(n1, n2) {
-    return n1 - n2;
+function subtract(num1, num2) {
+    return num1 - num2;
 }
 
-function multiply(n1, n2) {
-    return n1 * n2;
+function multiply(num1, num2) {
+    return num1 * num2;
 }
 
-function divide(n1, n2) {
-    return n1 / n2;
+function divide(num1, num2) {
+    return num1 / num2;
 }
