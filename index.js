@@ -27,6 +27,20 @@ clearButton.addEventListener(
 );
 
 
+function inputOperator(input) {
+    if (num1 === null) {
+        num1 = currentDisplay;
+        op = input;
+    } else {
+        num2 = currentDisplay;
+        currentDisplay = operate(op, num1, num2);
+        updateDisplay();
+        num1 = currentDisplay;
+        num2 = null;
+        op = input;
+    }
+}
+
 function clear() {
     num1 = null;
     num2 = null;
