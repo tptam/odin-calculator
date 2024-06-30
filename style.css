@@ -1,0 +1,15 @@
+body, button {
+    color: #b3f2ff;
+    font-size: 36px;
+    font-family: "Courier Prime", monospace;
+    background-color: #21303e;
+}
+
+#display {
+    border: 2px #b3f2ff solid;
+}
+
+button {
+    border-style: solid;
+    border-color: #b3f2ff;
+}
