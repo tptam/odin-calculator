@@ -25,9 +25,13 @@ body {
 }
 
 #display {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     border: 2px #b3f2ff solid;
     height: 12vmin;
-    text-align: right;
+    font-size: 9vmin;
+    padding-top: 1vmin;
     padding-right: 3vmin;
 }
 
@@ -56,7 +60,7 @@ body {
 button {
     border-style: solid;
     border-color: #b3f2ff;
-    font-size: 36px;
+    font-size: 6vmin;
     width: 12vmin;
     height: 12vmin;
     flex: none;
