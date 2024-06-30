@@ -88,12 +88,10 @@ function inputNumber(num){
     if (currentDisplay.toString().length > MAX_DIGIT) {
         return;
     }
-    if (currentDisplay === 0) {
-        currentDisplay = num;
-    } else if (op !== null && num2 === null) {
-        currentDisplay = num;
-    } else {
+    if (lastButton === "number") {
         currentDisplay = currentDisplay * 10 + num;
+    } else {
+        currentDisplay = num;
     }
 }
 
