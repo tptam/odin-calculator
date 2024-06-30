@@ -17,6 +17,18 @@ numberButtons.forEach(button => {
     )
 });
 
+const operatorButtons = document.querySelectorAll("button.operator");
+operatorButtons.forEach(button => {
+    button.addEventListener(
+        "click",
+        (e) => {
+            inputOperator(e.target.value);
+            updateDisplay();
+        }
+    )
+});
+
+
 const clearButton = document.querySelector("#clear");
 clearButton.addEventListener(
     "click",
@@ -34,7 +46,6 @@ function inputOperator(input) {
     } else {
         num2 = currentDisplay;
         currentDisplay = operate(op, num1, num2);
-        updateDisplay();
         num1 = currentDisplay;
         num2 = null;
         op = input;
