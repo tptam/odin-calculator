@@ -99,6 +99,7 @@ function inputSign() {
         case NUM1_INPUTTING:
             if (displayString[0] === "-") {
                 displayString = displayString.slice(1);
+                return;
             } else {
                 if (displayString.length > MAX_DIGIT) {
                     return;
@@ -163,7 +164,7 @@ function inputPoint() {
                 return;
             } else {
                 startInputFraction();
-                displayString =  displayValue.toString() + ".";
+                displayString =  displayString + ".";
                 return;
             }
         case OP_INPUTTING:
@@ -243,9 +244,12 @@ function inputOperator(input) {
 function clear() {
     endInputFraction();
     displayValue = 0;
+    displayString =  "0";
+    num1 = null;
+    num2 = null;
+    op = null;
     state = INITIAL;
     disableBackspace();
-    displayString =  "0";
 }
 
 
@@ -263,9 +267,13 @@ function inputNumber(num){
                 return;
             } else {
                 displayValue = parseFloat((displayString + num));
-                displayString = displayString === "0"
-                    ? num.toString()
-                    : displayString + num;
+                if (displayString === "0") {
+                    displayString = num.toString();
+                } else if (displayString === "-0") {
+                    displayString = "-" + num;
+                } else {
+                    displayString = displayString + num;
+                }
                 return;
             }
         case OP_INPUTTING:
