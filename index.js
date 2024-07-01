@@ -13,10 +13,8 @@ let op;
 let state;
 let inputtingFraction;
 
-
-let currentDisplayValue;
-let currentDisplayString;
-let nextDisplayString;
+let displayValue;
+let displayString;
 
 clear();
 updateDisplay();
@@ -75,9 +73,9 @@ function inputPoint() {
     switch (state) {
         case INITIAL:
             startInputFraction();
-            currentDisplayValue = 0;
+            displayValue = 0;
             state = NUM1_INPUTTING;
-            nextDisplayString = "0.";
+            displayString =  "0.";
             return;
         case NUM1_INPUTTING:
         case NUM2_INPUTTING:
@@ -85,13 +83,13 @@ function inputPoint() {
                 return;
             } else {
                 startInputFraction();
-                nextDisplayString = currentDisplayValue.toString() + ".";
+                displayString =  displayValue.toString() + ".";
                 return;
             }
         case OP_INPUTTING:
             startInputFraction();
-            currentDisplayValue = 0;
-            nextDisplayString = "0.";
+            displayValue = 0;
+            displayString =  "0.";
             state = NUM2_INPUTTING;
             break;
     }
@@ -112,25 +110,23 @@ function endInputFraction(){
 function inputEqual() {
     switch (state) {
         case INITIAL:
-            // nextDisplayString = currentDisplayString;
             return;
         case NUM1_INPUTTING:
             endInputFraction();
             state = INITIAL;
-            // nextDisplayString = currentDisplayString;
             return;
         case OP_INPUTTING:
             num2 = num1;
-            currentDisplayValue = operate(op, num1, num2);
+            displayValue = operate(op, num1, num2);
             state = INITIAL;
-            nextDisplayString = getResultString(currentDisplayValue);
+            displayString =  getResultString(displayValue);
             break;
         case NUM2_INPUTTING:
             endInputFraction();
-            num2 = currentDisplayValue;
-            currentDisplayValue = operate(op, num1, num2);
+            num2 = displayValue;
+            displayValue = operate(op, num1, num2);
             state = INITIAL;
-            nextDisplayString = getResultString(currentDisplayValue);
+            displayString =  getResultString(displayValue);
             break;
     }
 }
@@ -139,24 +135,22 @@ function inputOperator(input) {
     switch (state) {
         case INITIAL:
         case NUM1_INPUTTING:
-            num1 = currentDisplayValue;
+            num1 = displayValue;
             op = input;
             endInputFraction();
             state = OP_INPUTTING;
-            // nextDisplayString = currentDisplayString;
             return;
         case OP_INPUTTING:
             op = input;
-            // nextDisplayString = currentDisplayString;
             return;
         case NUM2_INPUTTING:
-            num2 = currentDisplayValue;
-            currentDisplayValue = operate(op, num1, num2);
-            num1 = currentDisplayValue;
+            num2 = displayValue;
+            displayValue = operate(op, num1, num2);
+            num1 = displayValue;
             op = input;
             endInputFraction();
             state = OP_INPUTTING;
-            nextDisplayString = getResultString(currentDisplayValue);
+            displayString =  getResultString(displayValue);
             break;
     }
 }
@@ -164,32 +158,32 @@ function inputOperator(input) {
 
 function clear() {
     endInputFraction();
-    currentDisplayValue = 0;
+    displayValue = 0;
     state = INITIAL;
-    nextDisplayString = "0";
+    displayString =  "0";
 }
 
 
 function inputNumber(num){
     switch(state) {
         case INITIAL:
-            currentDisplayValue = num;
+            displayValue = num;
             state = NUM1_INPUTTING;
-            nextDisplayString = num.toString();
+            displayString =  num.toString();
             return;
         case NUM1_INPUTTING:
         case NUM2_INPUTTING:
-            if (currentDisplayString.length === MAX_DIGIT) {
+            if (displayString.length === MAX_DIGIT) {
                 return;
             } else {
-                currentDisplayValue = parseFloat((currentDisplayString + num));
-                nextDisplayString = currentDisplayString + num;
+                displayValue = parseFloat((displayString + num));
+                displayString =  displayString + num;
                 return;
             }
         case OP_INPUTTING:
-            currentDisplayValue = num;
+            displayValue = num;
             state = NUM2_INPUTTING;
-            nextDisplayString = num.toString();
+            displayString =  num.toString();
             return;
     }
 }
@@ -197,8 +191,7 @@ function inputNumber(num){
 
 function updateDisplay() {
     const display = document.querySelector("#display");
-    display.textContent = nextDisplayString;
-    currentDisplayString = nextDisplayString;
+    display.textContent = displayString;
 }
 
 function operate(op, num1, num2) {
