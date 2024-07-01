@@ -172,11 +172,7 @@ function inputNumber(num){
             if (currentDisplayString.length === MAX_DIGIT) {
                 return;
             } else {
-                if (inputtingFraction) {
-                    currentDisplayValue = parseFloat((currentDisplayString + num));
-                } else {
-                    currentDisplayValue = parseInt((currentDisplayString + num));
-                }
+                currentDisplayValue = parseFloat((currentDisplayString + num));
                 updateDisplay(currentDisplayString + num);
                 return;
             }
