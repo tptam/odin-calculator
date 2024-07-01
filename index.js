@@ -1,4 +1,4 @@
-const MAX_DIGIT = 9;
+const MAX_DIGIT = 12;
 
 // State values
 const INITIAL = 0;
@@ -392,5 +392,6 @@ function roundStandard(num) {
     return num
         .toFixed(MAX_DIGIT)
         .slice(0, MAX_DIGIT)
-        .replace(/0+$/, "");
+        .replace(/0+$/, "")
+        .replace(/\.$/, "");
 }
