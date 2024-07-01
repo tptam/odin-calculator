@@ -217,7 +217,9 @@ function inputNumber(num){
                 return;
             } else {
                 displayValue = parseFloat((displayString + num));
-                displayString =  displayString + num;
+                displayString = displayString === "0"
+                    ? num.toString()
+                    : displayString + num;
                 return;
             }
         case OP_INPUTTING:
