@@ -162,6 +162,8 @@ function getResultString(num){
         return "nonsense @_@";
     } else if (!Number.isFinite(num)) {
         return "infinity 0_0";
+    } else if (num === 0) {
+        return "0";
     } else if (num > -1 * 10 ** (-MAX_DIGIT + 3) && num < 10 ** (-MAX_DIGIT + 2)) {
         // too small abs
         return roundScientific(num);
@@ -185,5 +187,5 @@ function roundScientific(num){
 }
 
 function roundFraction(num) {
-    return num.toFixed(MAX_DIGIT).slice(0, MAX_DIGIT).split(/\.0*$/)[0];
+    return num.toFixed(MAX_DIGIT).slice(0, MAX_DIGIT).split(/\.?0*$/)[0];
 }
