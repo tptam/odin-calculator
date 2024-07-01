@@ -6,6 +6,8 @@ const NUM1_INPUTTING = 1;
 const OP_INPUTTING = 2;
 const NUM2_INPUTTING = 3;
 
+const NUMS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const OPS = ["+", "-", "*", "/"];
 
 let num1;
 let num2;
@@ -87,6 +89,29 @@ signButton.addEventListener(
         updateDisplay();
     }
 );
+
+document.addEventListener(
+    "keydown",
+    (e) => {
+        if (NUMS.includes(e.key)) {
+            inputNumber(parseInt(e.key));
+            updateDisplay();
+        } else if (OPS.includes(e.key)) {
+            inputOperator(e.key);
+            updateDisplay();
+        } else if (e.key === "=" || e.key === "Enter" ) {
+            inputEqual();
+            updateDisplay();
+        } else if (e.key === "Backspace") {
+            inputBackspace();
+            updateDisplay();
+        } else if (e.key === ".") {
+            inputPoint();
+            updateDisplay();
+        }
+    }
+)
+
 
 function setState(newState) {
     state = newState;
