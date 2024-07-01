@@ -69,6 +69,46 @@ pointButton.addEventListener(
     }
 );
 
+const backspaceButton = document.querySelector("#backspace");
+backspaceButton.addEventListener(
+    "click",
+    (e) => {
+        inputBackspace();
+        updateDisplay();
+    }
+);
+
+function inputBackspace() {
+    switch (state) {
+        case INITIAL:
+        case OP_INPUTTING:
+            return;
+        case NUM1_INPUTTING:
+        case NUM2_INPUTTING:
+            displayString = displayString.slice(0, -1);
+            if (!displayString.includes(".")) {
+                endInputFraction();
+            }
+            if (displayString === "" || displayString === "-") {
+                displayString = "0";
+                displayValue = 0;
+            } else {
+                displayValue = parseFloat(displayString);
+            }
+            return;
+    }
+}
+
+function enableBackspace() {
+    const backspaceButton = document.querySelector("#backspace");
+    backspaceButton.disabled = false;
+}
+
+function disableBackspace() {
+    const backspaceButton = document.querySelector("#backspace");
+    backspaceButton.disabled = true;
+}
+
 function inputPoint() {
     switch (state) {
         case INITIAL:
