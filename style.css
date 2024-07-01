@@ -19,9 +19,12 @@ body {
 }
 
 #calc-wrapper {
+    box-sizing: content-box;
     flex: none;
     width: 75vmin;
     height: 72vmin;
+    padding: 5vmin;
+    background-color: #21303e;
 }
 
 #display {
@@ -79,6 +82,7 @@ button:hover {
 
 button:active {
     box-shadow: 0px 0px 10px;
+    transform: scale(.95);
     background-color: #4b6073;
 }
 
