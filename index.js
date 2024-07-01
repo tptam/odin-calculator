@@ -88,13 +88,28 @@ signButton.addEventListener(
     }
 );
 
+function setState(newState) {
+    state = newState;
+    switch (state) {
+        case INITIAL:
+            endInputFraction();
+            disableBackspace();
+        case NUM1_INPUTTING:
+            enableBackspace();
+        case NUM2_INPUTTING:
+            enableBackspace();
+        case OP_INPUTTING:
+            endInputFraction();
+            disableBackspace;
+    }
+}
+
 function inputSign() {
     switch (state) {
         case INITIAL:
             displayString = "-0";
             displayValue = 0;
-            enableBackspace();
-            state = NUM1_INPUTTING;
+            setState(NUM1_INPUTTING);
             return;
         case NUM1_INPUTTING:
             if (displayString[0] === "-") {
@@ -112,8 +127,7 @@ function inputSign() {
         case OP_INPUTTING:
             displayString = "-0";
             displayValue = 0;
-            enableBackspace();
-            state = NUM2_INPUTTING;
+            setState(NUM2_INPUTTING);
             return;
     }
 }
@@ -154,9 +168,8 @@ function inputPoint() {
         case INITIAL:
             startInputFraction();
             displayValue = 0;
-            state = NUM1_INPUTTING;
-            enableBackspace();
             displayString =  "0.";
+            setState(NUM1_INPUTTING);
             return;
         case NUM1_INPUTTING:
         case NUM2_INPUTTING:
@@ -171,8 +184,7 @@ function inputPoint() {
             startInputFraction();
             displayValue = 0;
             displayString =  "0.";
-            state = NUM2_INPUTTING;
-            enableBackspace();
+            setState(NUM2_INPUTTING);
             break;
     }
 }
@@ -194,23 +206,19 @@ function inputEqual() {
         case INITIAL:
             return;
         case NUM1_INPUTTING:
-            endInputFraction();
-            state = INITIAL;
-            disableBackspace();
+            setState(INITIAL);
             return;
         case OP_INPUTTING:
             num2 = num1;
             displayValue = operate(op, num1, num2);
-            state = INITIAL;
             displayString =  getResultString(displayValue);
+            setState(INITIAL);
             break;
         case NUM2_INPUTTING:
-            endInputFraction();
             num2 = displayValue;
             displayValue = operate(op, num1, num2);
-            state = INITIAL;
-            disableBackspace();
             displayString =  getResultString(displayValue);
+            setState(INITIAL);
             break;
     }
 }
@@ -222,8 +230,7 @@ function inputOperator(input) {
         case NUM1_INPUTTING:
             num1 = displayValue;
             op = input;
-            endInputFraction();
-            state = OP_INPUTTING;
+            setState(OP_INPUTTING);
             return;
         case OP_INPUTTING:
             op = input;
@@ -233,8 +240,7 @@ function inputOperator(input) {
             displayValue = operate(op, num1, num2);
             num1 = displayValue;
             op = input;
-            endInputFraction();
-            state = OP_INPUTTING;
+            setState(OP_INPUTTING);
             displayString =  getResultString(displayValue);
             break;
     }
@@ -242,14 +248,12 @@ function inputOperator(input) {
 
 
 function clear() {
-    endInputFraction();
     displayValue = 0;
     displayString =  "0";
     num1 = null;
     num2 = null;
     op = null;
-    state = INITIAL;
-    disableBackspace();
+    setState(INITIAL);
 }
 
 
@@ -257,9 +261,8 @@ function inputNumber(num){
     switch(state) {
         case INITIAL:
             displayValue = num;
-            state = NUM1_INPUTTING;
-            enableBackspace();
             displayString =  num.toString();
+            setState(NUM1_INPUTTING);
             return;
         case NUM1_INPUTTING:
         case NUM2_INPUTTING:
@@ -278,9 +281,8 @@ function inputNumber(num){
             }
         case OP_INPUTTING:
             displayValue = num;
-            state = NUM2_INPUTTING;
-            enableBackspace();
             displayString =  num.toString();
+            setState(NUM2_INPUTTING);
             return;
     }
 }
