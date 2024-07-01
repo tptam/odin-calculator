@@ -6,13 +6,15 @@ const NUM1_INPUTTING = 1;
 const OP_INPUTTING = 2;
 const NUM2_INPUTTING = 3;
 
+
 let num1;
 let num2;
 let op;
 let state = INITIAL;
+let inputtingFraction = false;
 
 let currentDisplayValue = 0;
-
+let currentDisplayString = "0";
 
 const numberButtons = document.querySelectorAll("button.number");
 numberButtons.forEach(button => {
@@ -55,11 +57,36 @@ equalButton.addEventListener(
     }
 );
 
+function inputPoint() {
+    switch (state) {
+        case INITIAL:
+            inputtingFraction = true;
+            currentDisplayValue = 0;
+            state = NUM1_INPUTTING;
+            break;
+        case NUM1_INPUTTING:
+        case NUM2_INPUTTING:
+            if (inputtingFraction) {
+                break;
+            } else {
+                inputtingFraction = true;
+                break;
+            }
+        case OP_INPUTTING:
+            inputtingFraction = true;
+            currentDisplayValue = 0;
+            state = NUM2_INPUTTING;
+            break;
+    }
+}
 
 function inputEqual() {
     switch (state) {
         case INITIAL:
+            break;
         case NUM1_INPUTTING:
+            inputtingFraction = false;
+            state = INITIAL;
             break;
         case OP_INPUTTING:
             num2 = num1;
@@ -67,6 +94,7 @@ function inputEqual() {
             state = INITIAL;
             break;
         case NUM2_INPUTTING:
+            inputtingFraction = false;
             num2 = currentDisplayValue;
             currentDisplayValue = operate(op, num1, num2);
             state = INITIAL;
@@ -80,6 +108,7 @@ function inputOperator(input) {
         case NUM1_INPUTTING:
             num1 = currentDisplayValue;
             op = input;
+            inputtingFraction = false;
             state = OP_INPUTTING;
             break;
         case OP_INPUTTING:
@@ -90,6 +119,7 @@ function inputOperator(input) {
             currentDisplayValue = operate(op, num1, num2);
             num1 = currentDisplayValue;
             op = input;
+            inputtingFraction = false;
             state = OP_INPUTTING;
             break;
     }
@@ -98,6 +128,7 @@ function inputOperator(input) {
 
 function clear() {
     currentDisplayValue = 0;
+    inputtingFraction = false;
     state = INITIAL;   
 }
 
@@ -110,10 +141,14 @@ function inputNumber(num){
             break;
         case NUM1_INPUTTING:
         case NUM2_INPUTTING:
-            if (currentDisplayValue.toString().length > MAX_DIGIT) {
+            if (currentDisplayString.length === MAX_DIGIT) {
                 break;
             } else {
-                currentDisplayValue = currentDisplayValue * 10 + num;
+                if (inputtingFraction) {
+                    currentDisplayValue = parseFloat((currentDisplayString + num));
+                } else {
+                    currentDisplayValue = parseInt((currentDisplayString + num));
+                }
                 break;
             }
         case OP_INPUTTING:
@@ -125,7 +160,8 @@ function inputNumber(num){
 
 function updateDisplay() {
     const display = document.querySelector("#display");
-    display.textContent = getResultString(currentDisplayValue);
+    currentDisplayString = getResultString(currentDisplayValue);
+    display.textContent = currentDisplayString;
 }
 
 function operate(op, num1, num2) {
@@ -166,6 +202,8 @@ function getResultString(num){
         return num.toString();
     } else if (isAbsTooLarge(num) || isAbsTooSmall(num)) {
         return roundScientific(num);
+    } else if (inputtingFraction && !currentDisplayString.includes(".")) {
+        return currentDisplayValue.toString() + ".";
     } else {
         return roundStandard(num);
     }
