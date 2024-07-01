@@ -265,6 +265,8 @@ function roundScientific(num){
 }
 
 function roundStandard(num) {
-    const str = num.toFixed(MAX_DIGIT).slice(0, MAX_DIGIT);
-    return str.at(-1) === "." ? str.slice(0, -1) : str;
+    return num
+        .toFixed(MAX_DIGIT)
+        .slice(0, MAX_DIGIT)
+        .replace(/0+$/, "");
 }
