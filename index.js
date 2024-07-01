@@ -13,6 +13,7 @@ let op;
 let state;
 let inputtingFraction;
 
+
 let currentDisplayValue;
 let currentDisplayString;
 
@@ -155,7 +156,7 @@ function clear() {
     endInputFraction();
     currentDisplayValue = 0;
     state = INITIAL;
-    updateDisplay("0");
+    updateDisplay();
 }
 
 
@@ -176,7 +177,7 @@ function inputNumber(num){
                 } else {
                     currentDisplayValue = parseInt((currentDisplayString + num));
                 }
-                updateDisplay();
+                updateDisplay(currentDisplayString + num);
                 return;
             }
         case OP_INPUTTING:
