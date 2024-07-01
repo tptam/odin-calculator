@@ -36,6 +36,7 @@ operatorButtons.forEach(button => {
         "click",
         (e) => {
             inputOperator(e.target.value);
+            disableBackspace();
             updateDisplay();
         }
     )
@@ -115,6 +116,7 @@ function inputPoint() {
             startInputFraction();
             displayValue = 0;
             state = NUM1_INPUTTING;
+            enableBackspace();
             displayString =  "0.";
             return;
         case NUM1_INPUTTING:
@@ -131,6 +133,7 @@ function inputPoint() {
             displayValue = 0;
             displayString =  "0.";
             state = NUM2_INPUTTING;
+            enableBackspace();
             break;
     }
 }
@@ -154,6 +157,7 @@ function inputEqual() {
         case NUM1_INPUTTING:
             endInputFraction();
             state = INITIAL;
+            disableBackspace();
             return;
         case OP_INPUTTING:
             num2 = num1;
@@ -166,12 +170,14 @@ function inputEqual() {
             num2 = displayValue;
             displayValue = operate(op, num1, num2);
             state = INITIAL;
+            disableBackspace();
             displayString =  getResultString(displayValue);
             break;
     }
 }
 
 function inputOperator(input) {
+    disableBackspace();
     switch (state) {
         case INITIAL:
         case NUM1_INPUTTING:
@@ -200,6 +206,7 @@ function clear() {
     endInputFraction();
     displayValue = 0;
     state = INITIAL;
+    disableBackspace();
     displayString =  "0";
 }
 
@@ -209,6 +216,7 @@ function inputNumber(num){
         case INITIAL:
             displayValue = num;
             state = NUM1_INPUTTING;
+            enableBackspace();
             displayString =  num.toString();
             return;
         case NUM1_INPUTTING:
@@ -225,6 +233,7 @@ function inputNumber(num){
         case OP_INPUTTING:
             displayValue = num;
             state = NUM2_INPUTTING;
+            enableBackspace();
             displayString =  num.toString();
             return;
     }
