@@ -79,6 +79,44 @@ backspaceButton.addEventListener(
     }
 );
 
+const signButton = document.querySelector("#sign");
+signButton.addEventListener(
+    "click",
+    (e) => {
+        inputSign();
+        updateDisplay();
+    }
+);
+
+function inputSign() {
+    switch (state) {
+        case INITIAL:
+            displayString = "-0";
+            displayValue = 0;
+            enableBackspace();
+            state = NUM1_INPUTTING;
+            return;
+        case NUM1_INPUTTING:
+            if (displayString[0] === "-") {
+                displayString = displayString.slice(1);
+            } else {
+                if (displayString.length > MAX_DIGIT) {
+                    return;
+                } else {
+                    displayString = "-" + displayString;
+                    displayValue = parseFloat(displayString);
+                    return;
+                }
+            }
+        case OP_INPUTTING:
+            displayString = "-0";
+            displayValue = 0;
+            enableBackspace();
+            state = NUM2_INPUTTING;
+            return;
+    }
+}
+
 function inputBackspace() {
     switch (state) {
         case INITIAL:
