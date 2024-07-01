@@ -162,17 +162,29 @@ function getResultString(num){
         return "nonsense @_@";
     } else if (!Number.isFinite(num)) {
         return "infinity 0_0";
-    } else if (num === 0) {
-        return "0";
-    } else if (num > -1 * 10 ** (-MAX_DIGIT + 3) && num < 10 ** (-MAX_DIGIT + 2)) {
-        // too small abs
-        return roundScientific(num);
-    } else if (num >= 10 ** MAX_DIGIT || num <= -1 * 10 ** (MAX_DIGIT - 1)) {
-        // too large abs
+    } else if (isWithinMaxDigit(num)) {
+        return num.toString();
+    } else if (isAbsTooLarge(num) || isAbsTooSmall(num)) {
         return roundScientific(num);
     } else {
-        return roundFraction(num);
+        return roundStandard(num);
     }
+}
+
+function isAbsTooSmall(num) {
+    return num > -1 * 10 ** (-MAX_DIGIT + 3) && num < 10 ** (-MAX_DIGIT + 2);
+}
+
+function isAbsTooLarge(num) {
+    num >= 10 ** MAX_DIGIT || num <= -1 * 10 ** (MAX_DIGIT - 1);
+}
+
+function isWithinMaxDigit(num){
+    const str = num.toString();
+    if (str.length > MAX_DIGIT || str.includes("e")){
+        return false;
+    }
+    return true;
 }
 
 function roundScientific(num){
@@ -186,6 +198,7 @@ function roundScientific(num){
     }
 }
 
-function roundFraction(num) {
-    return num.toFixed(MAX_DIGIT).slice(0, MAX_DIGIT).split(/\.?0*$/)[0];
+function roundStandard(num) {
+    const str = num.toFixed(MAX_DIGIT).slice(0, MAX_DIGIT);
+    return str.at(-1) === "." ? str.slice(0, -1) : str;
 }
