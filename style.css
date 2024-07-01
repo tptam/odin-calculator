@@ -79,6 +79,8 @@ button:active {
 button:disabled {
     box-shadow: none;
     background-color: #21303e;
+    border-color: #4b6073;
+    color: #4b6073;
 }
 
 button.glow-pink:active {
