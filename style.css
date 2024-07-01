@@ -81,6 +81,16 @@ button:disabled {
     background-color: #21303e;
 }
 
+button.glow-pink:active {
+    color: #FFDBD1;
+    border-color: #FFDBD1;
+}
+
+button.glow-yellow:active {
+    color: #FFFAD1;
+    border-color: #FFFAD1;
+}
+
 button.double {
     width: 27vmin;
 }
