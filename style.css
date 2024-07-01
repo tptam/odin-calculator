@@ -67,6 +67,12 @@ button {
     cursor: pointer;
 }
 
+button#sign {
+    font-size: 4vmin;
+    font-family: 'Courier';
+    font-weight: 700;
+}
+
 button:hover {
     background-color: #2f3d4a;
 }
