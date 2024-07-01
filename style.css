@@ -76,6 +76,11 @@ button:active {
     background-color: #4b6073;
 }
 
+button:disabled {
+    box-shadow: none;
+    background-color: #21303e;
+}
+
 button.double {
     width: 27vmin;
 }

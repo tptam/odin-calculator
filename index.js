@@ -10,11 +10,14 @@ const NUM2_INPUTTING = 3;
 let num1;
 let num2;
 let op;
-let state = INITIAL;
-let inputtingFraction = false;
+let state;
+let inputtingFraction;
 
-let currentDisplayValue = 0;
-let currentDisplayString = "0";
+let currentDisplayValue;
+let currentDisplayString;
+
+clear();
+updateDisplay();
 
 const numberButtons = document.querySelectorAll("button.number");
 numberButtons.forEach(button => {
@@ -22,7 +25,6 @@ numberButtons.forEach(button => {
         "click",
         (e) => {
             inputNumber(parseInt(e.target.value));
-            updateDisplay();
         }
     )
 });
@@ -33,7 +35,6 @@ operatorButtons.forEach(button => {
         "click",
         (e) => {
             inputOperator(e.target.value);
-            updateDisplay();
         }
     )
 });
@@ -44,7 +45,6 @@ clearButton.addEventListener(
     "click",
     (e) => {
         clear();
-        updateDisplay();
     }
 );
 
@@ -53,51 +53,75 @@ equalButton.addEventListener(
     "click",
     (e) => {
         inputEqual();
-        updateDisplay();
+    }
+);
+
+const pointButton = document.querySelector("#point");
+pointButton.addEventListener(
+    "click",
+    (e) => {
+        inputPoint();
     }
 );
 
 function inputPoint() {
     switch (state) {
         case INITIAL:
-            inputtingFraction = true;
+            startInputFraction();
             currentDisplayValue = 0;
             state = NUM1_INPUTTING;
-            break;
+            updateDisplay("0.");
+            return;
         case NUM1_INPUTTING:
         case NUM2_INPUTTING:
             if (inputtingFraction) {
-                break;
+                return;
             } else {
-                inputtingFraction = true;
-                break;
+                startInputFraction();
+                updateDisplay(currentDisplayValue.toString() + ".");
+                return;
             }
         case OP_INPUTTING:
-            inputtingFraction = true;
+            startInputFraction();
             currentDisplayValue = 0;
+            updateDisplay("0.");
             state = NUM2_INPUTTING;
             break;
     }
 }
 
+function startInputFraction(){
+    inputtingFraction = true;
+    const pointButton = document.querySelector("#point");
+    pointButton.disabled = true;
+}
+
+function endInputFraction(){
+    inputtingFraction = false;
+    const pointButton = document.querySelector("#point");
+    pointButton.disabled = false;
+}
+
 function inputEqual() {
     switch (state) {
         case INITIAL:
-            break;
+            return;
         case NUM1_INPUTTING:
-            inputtingFraction = false;
+            endInputFraction();
             state = INITIAL;
-            break;
+            return;
         case OP_INPUTTING:
             num2 = num1;
             currentDisplayValue = operate(op, num1, num2);
             state = INITIAL;
+            updateDisplay();
             break;
         case NUM2_INPUTTING:
-            inputtingFraction = false;
+            endInputFraction();
             num2 = currentDisplayValue;
             currentDisplayValue = operate(op, num1, num2);
             state = INITIAL;
+            updateDisplay();
             break;
     }
 }
@@ -108,28 +132,30 @@ function inputOperator(input) {
         case NUM1_INPUTTING:
             num1 = currentDisplayValue;
             op = input;
-            inputtingFraction = false;
+            endInputFraction();
             state = OP_INPUTTING;
-            break;
+            return;
         case OP_INPUTTING:
             op = input;
-            break;
+            return;
         case NUM2_INPUTTING:
             num2 = currentDisplayValue;
             currentDisplayValue = operate(op, num1, num2);
             num1 = currentDisplayValue;
             op = input;
-            inputtingFraction = false;
+            endInputFraction();
             state = OP_INPUTTING;
+            updateDisplay();
             break;
     }
 }
 
 
 function clear() {
+    endInputFraction();
     currentDisplayValue = 0;
-    inputtingFraction = false;
-    state = INITIAL;   
+    state = INITIAL;
+    updateDisplay("0");
 }
 
 
@@ -138,30 +164,38 @@ function inputNumber(num){
         case INITIAL:
             currentDisplayValue = num;
             state = NUM1_INPUTTING;
-            break;
+            updateDisplay();
+            return;
         case NUM1_INPUTTING:
         case NUM2_INPUTTING:
             if (currentDisplayString.length === MAX_DIGIT) {
-                break;
+                return;
             } else {
                 if (inputtingFraction) {
                     currentDisplayValue = parseFloat((currentDisplayString + num));
                 } else {
                     currentDisplayValue = parseInt((currentDisplayString + num));
                 }
-                break;
+                updateDisplay();
+                return;
             }
         case OP_INPUTTING:
             currentDisplayValue = num;
             state = NUM2_INPUTTING;
-            break;
+            updateDisplay();
+            return;
     }
 }
 
-function updateDisplay() {
+
+function updateDisplay(str) {
     const display = document.querySelector("#display");
-    currentDisplayString = getResultString(currentDisplayValue);
-    display.textContent = currentDisplayString;
+    if (str === undefined) {
+        display.textContent = getResultString(currentDisplayValue);
+    } else {
+        display.textContent = str;
+    }
+    currentDisplayString = display.textContent;
 }
 
 function operate(op, num1, num2) {
@@ -202,8 +236,6 @@ function getResultString(num){
         return num.toString();
     } else if (isAbsTooLarge(num) || isAbsTooSmall(num)) {
         return roundScientific(num);
-    } else if (inputtingFraction && !currentDisplayString.includes(".")) {
-        return currentDisplayValue.toString() + ".";
     } else {
         return roundStandard(num);
     }
@@ -214,7 +246,7 @@ function isAbsTooSmall(num) {
 }
 
 function isAbsTooLarge(num) {
-    num >= 10 ** MAX_DIGIT || num <= -1 * 10 ** (MAX_DIGIT - 1);
+    return num >= 10 ** MAX_DIGIT || num <= -1 * 10 ** (MAX_DIGIT - 1);
 }
 
 function isWithinMaxDigit(num){
