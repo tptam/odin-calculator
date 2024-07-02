@@ -151,6 +151,7 @@ document.addEventListener(
     }
 );
 
+
 clear();
 updateDisplay();
 
