@@ -171,7 +171,7 @@ function setState(newState) {
             return;
         case OP_INPUTTING:
             endInputFraction();
-            disableBackspace;
+            disableBackspace();
             return;
     }
 }
@@ -219,7 +219,6 @@ function inputNumber(num){
 
 
 function inputOperator(input) {
-    disableBackspace();
     switch (state) {
         case INITIAL:
         case NUM1_INPUTTING:
