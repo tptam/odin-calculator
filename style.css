@@ -95,14 +95,14 @@ button.glow-pink:active,
 button.glowing-pink {
     color: #FFDBD1;
     border-color: #FFDBD1;
-    background-color: #7a6863;
+    background-color: #524d5d;
 }
 
 button.glow-yellow:active,
 button.glowing-yellow {
     color: #FFFAD1;
     border-color: #FFFAD1;
-    background-color: #77755e;
+    background-color: #464f3e;
 }
 
 button.double {
