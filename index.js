@@ -53,7 +53,19 @@ operatorButtons.forEach(button => {
             inputOperator(e.target.value);
             updateDisplay();
         }
-    )
+    );
+    button.addEventListener(
+        "touchstart",
+        (e) => {
+            glowButton(e.target.id);
+        }
+    );
+    button.addEventListener(
+        "touchend",
+        (e) => {
+            unglowButton(e.target.id);
+        }
+    );
 });
 
 const equalButton = document.querySelector("#equal");
@@ -62,6 +74,18 @@ equalButton.addEventListener(
     (e) => {
         inputEqual();
         updateDisplay();
+    }
+);
+equalButton.addEventListener(
+    "touchstart",
+    (e) => {
+        glowButton(e.target.id);
+    }
+);
+equalButton.addEventListener(
+    "touchend",
+    (e) => {
+        unglowButton(e.target.id);
     }
 );
 
@@ -73,6 +97,18 @@ clearButton.addEventListener(
         updateDisplay();
     }
 );
+clearButton.addEventListener(
+    "touchstart",
+    (e) => {
+        glowButton(e.target.id);
+    }
+);
+clearButton.addEventListener(
+    "touchend",
+    (e) => {
+        unglowButton(e.target.id);
+    }
+);
 
 const backspaceButton = document.querySelector("#backspace");
 backspaceButton.addEventListener(
@@ -80,6 +116,18 @@ backspaceButton.addEventListener(
     (e) => {
         inputBackspace();
         updateDisplay();
+    }
+);
+backspaceButton.addEventListener(
+    "touchstart",
+    (e) => {
+        glowButton(e.target.id);
+    }
+);
+backspaceButton.addEventListener(
+    "touchend",
+    (e) => {
+        unglowButton(e.target.id);
     }
 );
 
@@ -91,6 +139,19 @@ pointButton.addEventListener(
         updateDisplay();
     }
 );
+pointButton.addEventListener(
+    "touchstart",
+    (e) => {
+        glowButton(e.target.id);
+    }
+);
+pointButton.addEventListener(
+    "touchend",
+    (e) => {
+        unglowButton(e.target.id);
+    }
+);
+
 
 const signButton = document.querySelector("#sign");
 signButton.addEventListener(
@@ -100,6 +161,20 @@ signButton.addEventListener(
         updateDisplay();
     }
 );
+signButton.addEventListener(
+    "touchstart",
+    (e) => {
+        glowButton(e.target.id);
+    }
+);
+signButton.addEventListener(
+    "touchend",
+    (e) => {
+        unglowButton(e.target.id);
+    }
+);
+
+
 
 document.addEventListener(
     "keydown",
