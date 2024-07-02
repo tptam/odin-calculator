@@ -334,6 +334,8 @@ function inputPoint() {
 function updateDisplay() {
     const display = document.querySelector("#display");
     display.textContent = displayString;
+    const buttons = document.querySelectorAll("button");
+    buttons.forEach(button => button.blur());
 }
 
 
