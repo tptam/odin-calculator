@@ -57,6 +57,7 @@ operatorButtons.forEach(button => {
     button.addEventListener(
         "touchstart",
         (e) => {
+            console.log('touched');
             glowButton(e.target.id);
         }
     );
@@ -473,7 +474,7 @@ function getDisplayStringLength(){
 
 function getResultString(num){
     if (Number.isNaN(num)) {
-        return "nonsense @_@";
+        return "undefined @_@";
     } else if (!Number.isFinite(num)) {
         return "infinity 0_0";
     } else if (isWithinMaxDigit(num)) {
