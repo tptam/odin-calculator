@@ -7,7 +7,7 @@ const OP_INPUTTING = 2;
 const NUM2_INPUTTING = 3;
 
 const NUM_KEYS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-const OP_KEYS = ["+", "-", "*", "/"];
+const OP_KEYS = {"+": "add", "-": "subtract", "*": "multiply", "/": "divide"};
 const EQUAL_KEYS = ["=", "Enter"];
 const BACKSPACE_KEYS = ["Backspace", "Delete"];
 const POINT_KEYS = [".", ","];
@@ -99,23 +99,10 @@ document.addEventListener(
             inputNumber(parseInt(e.key));
             updateDisplay();
             glowButton("num" + e.key);
-        } else if (OP_KEYS.includes(e.key)) {
+        } else if (e.key in OP_KEYS) {
             inputOperator(e.key);
             updateDisplay();
-            switch(e.key) {
-                case "+":
-                    glowButton("add");
-                    break;
-                case "-":
-                    glowButton("subtract");
-                    break;
-                case "*":
-                    glowButton("multiply");
-                    break;
-                case "/":
-                    glowButton("divide");
-                    break;
-            }
+            glowButton(OP_KEYS[e.key]);
         } else if (EQUAL_KEYS.includes(e.key)) {
             inputEqual();
             updateDisplay();
@@ -137,21 +124,8 @@ document.addEventListener(
     (e) => {
         if (NUM_KEYS.includes(e.key)) {
             unglowButton("num" + e.key);
-        } else if (OP_KEYS.includes(e.key)) {
-            switch(e.key) {
-                case "+":
-                    unglowButton("add");
-                    break;
-                case "-":
-                    unglowButton("subtract");
-                    break;
-                case "*":
-                    unglowButton("multiply");
-                    break;
-                case "/":
-                    unglowButton("divide");
-                    break;
-            }
+        } else if (e.key in OP_KEYS) {
+            unglowButton(OP_KEYS[e.key]);
         } else if (EQUAL_KEYS.includes(e.key)) {
             unglowButton("equal");
         } else if (BACKSPACE_KEYS.includes(e.key)) {
