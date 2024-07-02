@@ -6,8 +6,12 @@ const NUM1_INPUTTING = 1;
 const OP_INPUTTING = 2;
 const NUM2_INPUTTING = 3;
 
+// Keyboard input keys
 const NUMS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const OPS = ["+", "-", "*", "/"];
+const EQUALS = ["=", "Enter"];
+const BACKSPACES = ["Backspace", "Delete"];
+const POINTS = [".", ","];
 
 let num1;
 let num2;
@@ -99,13 +103,13 @@ document.addEventListener(
         } else if (OPS.includes(e.key)) {
             inputOperator(e.key);
             updateDisplay();
-        } else if (e.key === "=" || e.key === "Enter" ) {
+        } else if (EQUALS.includes(e.key)) {
             inputEqual();
             updateDisplay();
-        } else if (e.key === "Backspace") {
+        } else if (BACKSPACES.includes(e.key)) {
             inputBackspace();
             updateDisplay();
-        } else if (e.key === ".") {
+        } else if (POINTS.includes(e.key)) {
             inputPoint();
             updateDisplay();
         }
