@@ -6,12 +6,11 @@ const NUM1_INPUTTING = 1;
 const OP_INPUTTING = 2;
 const NUM2_INPUTTING = 3;
 
-// Keyboard input keys
-const NUMS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-const OPS = ["+", "-", "*", "/"];
-const EQUALS = ["=", "Enter"];
-const BACKSPACES = ["Backspace", "Delete"];
-const POINTS = [".", ","];
+const NUM_KEYS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const OP_KEYS = ["+", "-", "*", "/"];
+const EQUAL_KEYS = ["=", "Enter"];
+const BACKSPACE_KEYS = ["Backspace", "Delete"];
+const POINT_KEYS = [".", ","];
 
 let num1;
 let num2;
@@ -42,7 +41,6 @@ operatorButtons.forEach(button => {
         "click",
         (e) => {
             inputOperator(e.target.value);
-            disableBackspace();
             updateDisplay();
         }
     )
@@ -97,11 +95,11 @@ signButton.addEventListener(
 document.addEventListener(
     "keydown",
     (e) => {
-        if (NUMS.includes(e.key)) {
+        if (NUM_KEYS.includes(e.key)) {
             inputNumber(parseInt(e.key));
             updateDisplay();
             glowButton("num" + e.key);
-        } else if (OPS.includes(e.key)) {
+        } else if (OP_KEYS.includes(e.key)) {
             inputOperator(e.key);
             updateDisplay();
             switch(e.key) {
@@ -118,15 +116,15 @@ document.addEventListener(
                     glowButton("divide");
                     break;
             }
-        } else if (EQUALS.includes(e.key)) {
+        } else if (EQUAL_KEYS.includes(e.key)) {
             inputEqual();
             updateDisplay();
             glowButton("equal");
-        } else if (BACKSPACES.includes(e.key)) {
+        } else if (BACKSPACE_KEYS.includes(e.key)) {
             inputBackspace();
             updateDisplay();
             glowButton("backspace");
-        } else if (POINTS.includes(e.key)) {
+        } else if (POINT_KEYS.includes(e.key)) {
             inputPoint();
             updateDisplay();
             glowButton("point");
@@ -137,9 +135,9 @@ document.addEventListener(
 document.addEventListener(
     "keyup",
     (e) => {
-        if (NUMS.includes(e.key)) {
+        if (NUM_KEYS.includes(e.key)) {
             unglowButton("num" + e.key);
-        } else if (OPS.includes(e.key)) {
+        } else if (OP_KEYS.includes(e.key)) {
             switch(e.key) {
                 case "+":
                     unglowButton("add");
@@ -154,11 +152,11 @@ document.addEventListener(
                     unglowButton("divide");
                     break;
             }
-        } else if (EQUALS.includes(e.key)) {
+        } else if (EQUAL_KEYS.includes(e.key)) {
             unglowButton("equal");
-        } else if (BACKSPACES.includes(e.key)) {
+        } else if (BACKSPACE_KEYS.includes(e.key)) {
             unglowButton("backspace");
-        } else if (POINTS.includes(e.key)) {
+        } else if (POINT_KEYS.includes(e.key)) {
             unglowButton("point");
         }
     }
