@@ -337,10 +337,6 @@ function inputEqual() {
 function inputSign() {
     switch (state) {
         case INITIAL:
-            displayString = "-0";
-            displayValue = 0;
-            setState(NUM1_INPUTTING);
-            return;
         case NUM1_INPUTTING:
             if (displayString[0] === "-") {
                 displayString = displayString.slice(1);
