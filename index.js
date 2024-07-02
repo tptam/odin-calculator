@@ -21,8 +21,6 @@ let inputtingFraction;
 let displayValue;
 let displayString;
 
-clear();
-updateDisplay();
 
 const numberButtons = document.querySelectorAll("button.number");
 numberButtons.forEach(button => {
@@ -136,6 +134,10 @@ document.addEventListener(
     }
 );
 
+clear();
+updateDisplay();
+
+
 
 function glowButton(id) {
     const target = document.querySelector("#" + id);
@@ -168,13 +170,17 @@ function setState(newState) {
         case INITIAL:
             endInputFraction();
             disableBackspace();
+            return;
         case NUM1_INPUTTING:
             enableBackspace();
+            return;
         case NUM2_INPUTTING:
             enableBackspace();
+            return;
         case OP_INPUTTING:
             endInputFraction();
             disableBackspace;
+            return;
     }
 }
 
