@@ -15,6 +15,7 @@ const POINT_KEYS = [".", ","];
 let num1;
 let num2;
 let op;
+
 let state;
 let inputtingFraction;
 
@@ -31,18 +32,6 @@ numberButtons.forEach(button => {
             updateDisplay();
         }
     );
-    button.addEventListener(
-        "touchstart",
-        (e) => {
-            glowButton(e.target.id);
-        }
-    );
-    button.addEventListener(
-        "touchend",
-        (e) => {
-            unglowButton(e.target.id);
-        }
-    );
 });
 
 const operatorButtons = document.querySelectorAll("button.operator");
@@ -52,19 +41,6 @@ operatorButtons.forEach(button => {
         (e) => {
             inputOperator(e.target.value);
             updateDisplay();
-        }
-    );
-    button.addEventListener(
-        "touchstart",
-        (e) => {
-            console.log('touched');
-            glowButton(e.target.id);
-        }
-    );
-    button.addEventListener(
-        "touchend",
-        (e) => {
-            unglowButton(e.target.id);
         }
     );
 });
@@ -77,18 +53,6 @@ equalButton.addEventListener(
         updateDisplay();
     }
 );
-equalButton.addEventListener(
-    "touchstart",
-    (e) => {
-        glowButton(e.target.id);
-    }
-);
-equalButton.addEventListener(
-    "touchend",
-    (e) => {
-        unglowButton(e.target.id);
-    }
-);
 
 const clearButton = document.querySelector("#clear");
 clearButton.addEventListener(
@@ -96,18 +60,6 @@ clearButton.addEventListener(
     (e) => {
         clear();
         updateDisplay();
-    }
-);
-clearButton.addEventListener(
-    "touchstart",
-    (e) => {
-        glowButton(e.target.id);
-    }
-);
-clearButton.addEventListener(
-    "touchend",
-    (e) => {
-        unglowButton(e.target.id);
     }
 );
 
@@ -119,18 +71,6 @@ backspaceButton.addEventListener(
         updateDisplay();
     }
 );
-backspaceButton.addEventListener(
-    "touchstart",
-    (e) => {
-        glowButton(e.target.id);
-    }
-);
-backspaceButton.addEventListener(
-    "touchend",
-    (e) => {
-        unglowButton(e.target.id);
-    }
-);
 
 const pointButton = document.querySelector("#point");
 pointButton.addEventListener(
@@ -140,19 +80,6 @@ pointButton.addEventListener(
         updateDisplay();
     }
 );
-pointButton.addEventListener(
-    "touchstart",
-    (e) => {
-        glowButton(e.target.id);
-    }
-);
-pointButton.addEventListener(
-    "touchend",
-    (e) => {
-        unglowButton(e.target.id);
-    }
-);
-
 
 const signButton = document.querySelector("#sign");
 signButton.addEventListener(
@@ -162,21 +89,25 @@ signButton.addEventListener(
         updateDisplay();
     }
 );
-signButton.addEventListener(
-    "touchstart",
-    (e) => {
-        glowButton(e.target.id);
-    }
-);
-signButton.addEventListener(
-    "touchend",
-    (e) => {
-        unglowButton(e.target.id);
-    }
-);
 
+// For touch screen devices
+const buttons = document.querySelectorAll("button");
+buttons.forEach(button => {
+    button.addEventListener(
+        "touchstart",
+        (e) => {
+            glowButton(e.target.id);
+        }
+    );
+    button.addEventListener(
+        "touchend",
+        (e) => {
+            unglowButton(e.target.id);
+        }
+    );
+});
 
-
+//For keystroke input
 document.addEventListener(
     "keydown",
     (e) => {
@@ -203,7 +134,6 @@ document.addEventListener(
         }
     }
 )
-
 document.addEventListener(
     "keyup",
     (e) => {
