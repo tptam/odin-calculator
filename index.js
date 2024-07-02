@@ -1,4 +1,4 @@
-const MAX_DIGIT = 12;
+const MAX_DIGIT = 10;
 
 // State values
 const INITIAL = 0;
@@ -139,16 +139,11 @@ function inputSign() {
         case NUM1_INPUTTING:
             if (displayString[0] === "-") {
                 displayString = displayString.slice(1);
-                return;
             } else {
-                if (displayString.length > MAX_DIGIT) {
-                    return;
-                } else {
-                    displayString = "-" + displayString;
-                    displayValue = parseFloat(displayString);
-                    return;
-                }
+                displayString = "-" + displayString;
             }
+            displayValue = parseFloat(displayString);
+            return;
         case OP_INPUTTING:
             displayString = "-0";
             displayValue = 0;
@@ -291,7 +286,7 @@ function inputNumber(num){
             return;
         case NUM1_INPUTTING:
         case NUM2_INPUTTING:
-            if (displayString.length === MAX_DIGIT) {
+            if (getDisplayStringLength() === MAX_DIGIT) {
                 return;
             } else {
                 displayValue = parseFloat((displayString + num));
@@ -347,6 +342,10 @@ function divide(num1, num2) {
     return num1 / num2;
 }
 
+function getDisplayStringLength(){
+    return displayString.replace(/[.-]/g, "").length;
+}
+
 function getResultString(num){
     if (Number.isNaN(num)) {
         return "nonsense @_@";
@@ -361,16 +360,16 @@ function getResultString(num){
     }
 }
 
-function isAbsTooSmall(num) {
-    return num > -1 * 10 ** (-MAX_DIGIT + 3) && num < 10 ** (-MAX_DIGIT + 2);
+function isAbsTooSmall(num){
+    return Math.abs(num) < 10 ** -(MAX_DIGIT - 1);
 }
 
-function isAbsTooLarge(num) {
-    return num >= 10 ** MAX_DIGIT || num <= -1 * 10 ** (MAX_DIGIT - 1);
+function isAbsTooLarge(num){
+    return Math.abs(num) > (10 ** MAX_DIGIT - 1);
 }
 
 function isWithinMaxDigit(num){
-    const str = num.toString();
+    const str = num.toString().replace(/[.-]/g, "");
     if (str.length > MAX_DIGIT || str.includes("e")){
         return false;
     }
@@ -378,20 +377,31 @@ function isWithinMaxDigit(num){
 }
 
 function roundScientific(num){
-    let scientific = num.toExponential();
-    if (scientific.length <= MAX_DIGIT) {
-        return scientific;
+    let scientific_abs = Math.abs(num).toExponential();
+    if (scientific_abs.length <= MAX_DIGIT) {
+        return num.toExponential();
     } else {
-        const parts = scientific.split(/[\.e]/);
-        const fractionDigits = MAX_DIGIT - (parts.at(0) + parts.at(-1)).length - 2;
+        const split = scientific_abs.split(/[.e]/);
+        const nonFractionDigits = (split[0] + "e" + split[2]).length;
+        const fractionDigits = MAX_DIGIT - nonFractionDigits;
         return num.toExponential(fractionDigits);
     }
 }
 
-function roundStandard(num) {
-    return num
-        .toFixed(MAX_DIGIT)
-        .slice(0, MAX_DIGIT)
+function roundStandard(num){
+    let i = 0;
+    let rounded = "";
+    for (char of num.toFixed(MAX_DIGIT)) {
+        rounded += char;
+        if (char === "-" || char === ".") {
+            continue;
+        }
+        i++;
+        if (i >= MAX_DIGIT) {
+            break;
+        }
+    }
+    return rounded
         .replace(/0+$/, "")
         .replace(/\.$/, "");
 }
