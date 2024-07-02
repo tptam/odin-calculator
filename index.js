@@ -30,7 +30,19 @@ numberButtons.forEach(button => {
             inputNumber(parseInt(e.target.value));
             updateDisplay();
         }
-    )
+    );
+    button.addEventListener(
+        "touchstart",
+        (e) => {
+            glowButton(e.target.id);
+        }
+    );
+    button.addEventListener(
+        "touchend",
+        (e) => {
+            unglowButton(e.target.id);
+        }
+    );
 });
 
 const operatorButtons = document.querySelectorAll("button.operator");
