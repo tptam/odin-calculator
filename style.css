@@ -84,19 +84,22 @@ button:hover {
     background-color: #2f3d4a;
 }
 
-button:active {
+button:active,
+button.glowing {
     box-shadow: 0px 0px 10px;
     transform: scale(.98);
     background-color: #4b6073;
 }
 
-button.glow-pink:active {
+button.glow-pink:active,
+button.glowing-pink {
     color: #FFDBD1;
     border-color: #FFDBD1;
     background-color: #7a6863;
 }
 
-button.glow-yellow:active {
+button.glow-yellow:active,
+button.glowing-yellow {
     color: #FFFAD1;
     border-color: #FFFAD1;
     background-color: #77755e;
