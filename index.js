@@ -100,21 +100,94 @@ document.addEventListener(
         if (NUMS.includes(e.key)) {
             inputNumber(parseInt(e.key));
             updateDisplay();
+            glowButton("num" + e.key);
         } else if (OPS.includes(e.key)) {
             inputOperator(e.key);
             updateDisplay();
+            switch(e.key) {
+                case "+":
+                    glowButton("add");
+                    break;
+                case "-":
+                    glowButton("subtract");
+                    break;
+                case "*":
+                    glowButton("multiply");
+                    break;
+                case "/":
+                    glowButton("divide");
+                    break;
+            }
         } else if (EQUALS.includes(e.key)) {
             inputEqual();
             updateDisplay();
+            glowButton("equal");
         } else if (BACKSPACES.includes(e.key)) {
             inputBackspace();
             updateDisplay();
+            glowButton("backspace");
         } else if (POINTS.includes(e.key)) {
             inputPoint();
             updateDisplay();
+            glowButton("point");
         }
     }
 )
+
+document.addEventListener(
+    "keyup",
+    (e) => {
+        if (NUMS.includes(e.key)) {
+            unglowButton("num" + e.key);
+        } else if (OPS.includes(e.key)) {
+            switch(e.key) {
+                case "+":
+                    unglowButton("add");
+                    break;
+                case "-":
+                    unglowButton("subtract");
+                    break;
+                case "*":
+                    unglowButton("multiply");
+                    break;
+                case "/":
+                    unglowButton("divide");
+                    break;
+            }
+        } else if (EQUALS.includes(e.key)) {
+            unglowButton("equal");
+        } else if (BACKSPACES.includes(e.key)) {
+            unglowButton("backspace");
+        } else if (POINTS.includes(e.key)) {
+            unglowButton("point");
+        }
+    }
+);
+
+
+function glowButton(id) {
+    const target = document.querySelector("#" + id);
+    if (target.disabled) {
+        return;
+    }
+    target.classList.add("glowing");
+    const glowClass = Array.from(target.classList).find(x=>x.startsWith("glow-"));
+    if (glowClass) {
+        target.classList.add(glowClass.replace("glow", "glowing"));
+    }
+}
+
+function unglowButton(id){
+    const target = document.querySelector("#" + id);
+    if (target.disabled) {
+        return;
+    }
+    target.classList.remove("glowing");
+    const glowingClass = Array.from(target.classList).find(x=>x.startsWith("glowing-"));
+    if (glowingClass) {
+        target.classList.remove(glowingClass);
+    } 
+}
 
 
 function setState(newState) {
