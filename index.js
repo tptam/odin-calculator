@@ -44,6 +44,14 @@ operatorButtons.forEach(button => {
     )
 });
 
+const equalButton = document.querySelector("#equal");
+equalButton.addEventListener(
+    "click",
+    (e) => {
+        inputEqual();
+        updateDisplay();
+    }
+);
 
 const clearButton = document.querySelector("#clear");
 clearButton.addEventListener(
@@ -54,11 +62,11 @@ clearButton.addEventListener(
     }
 );
 
-const equalButton = document.querySelector("#equal");
-equalButton.addEventListener(
+const backspaceButton = document.querySelector("#backspace");
+backspaceButton.addEventListener(
     "click",
     (e) => {
-        inputEqual();
+        inputBackspace();
         updateDisplay();
     }
 );
@@ -68,15 +76,6 @@ pointButton.addEventListener(
     "click",
     (e) => {
         inputPoint();
-        updateDisplay();
-    }
-);
-
-const backspaceButton = document.querySelector("#backspace");
-backspaceButton.addEventListener(
-    "click",
-    (e) => {
-        inputBackspace();
         updateDisplay();
     }
 );
@@ -138,32 +137,6 @@ clear();
 updateDisplay();
 
 
-
-function glowButton(id) {
-    const target = document.querySelector("#" + id);
-    if (target.disabled) {
-        return;
-    }
-    target.classList.add("glowing");
-    const glowClass = Array.from(target.classList).find(x=>x.startsWith("glow-"));
-    if (glowClass) {
-        target.classList.add(glowClass.replace("glow", "glowing"));
-    }
-}
-
-function unglowButton(id){
-    const target = document.querySelector("#" + id);
-    if (target.disabled) {
-        return;
-    }
-    target.classList.remove("glowing");
-    const glowingClass = Array.from(target.classList).find(x=>x.startsWith("glowing-"));
-    if (glowingClass) {
-        target.classList.remove(glowingClass);
-    } 
-}
-
-
 function setState(newState) {
     state = newState;
     switch (state) {
@@ -181,143 +154,6 @@ function setState(newState) {
             endInputFraction();
             disableBackspace;
             return;
-    }
-}
-
-function inputSign() {
-    switch (state) {
-        case INITIAL:
-            displayString = "-0";
-            displayValue = 0;
-            setState(NUM1_INPUTTING);
-            return;
-        case NUM1_INPUTTING:
-            if (displayString[0] === "-") {
-                displayString = displayString.slice(1);
-            } else {
-                displayString = "-" + displayString;
-            }
-            displayValue = parseFloat(displayString);
-            return;
-        case OP_INPUTTING:
-            displayString = "-0";
-            displayValue = 0;
-            setState(NUM2_INPUTTING);
-            return;
-    }
-}
-
-function inputBackspace() {
-    switch (state) {
-        case INITIAL:
-        case OP_INPUTTING:
-            return;
-        case NUM1_INPUTTING:
-        case NUM2_INPUTTING:
-            displayString = displayString.slice(0, -1);
-            if (!displayString.includes(".")) {
-                endInputFraction();
-            }
-            if (displayString === "" || displayString === "-") {
-                displayString = "0";
-                displayValue = 0;
-            } else {
-                displayValue = parseFloat(displayString);
-            }
-            return;
-    }
-}
-
-function enableBackspace() {
-    const backspaceButton = document.querySelector("#backspace");
-    backspaceButton.disabled = false;
-}
-
-function disableBackspace() {
-    const backspaceButton = document.querySelector("#backspace");
-    backspaceButton.disabled = true;
-}
-
-function inputPoint() {
-    switch (state) {
-        case INITIAL:
-            startInputFraction();
-            displayValue = 0;
-            displayString =  "0.";
-            setState(NUM1_INPUTTING);
-            return;
-        case NUM1_INPUTTING:
-        case NUM2_INPUTTING:
-            if (inputtingFraction) {
-                return;
-            } else {
-                startInputFraction();
-                displayString =  displayString + ".";
-                return;
-            }
-        case OP_INPUTTING:
-            startInputFraction();
-            displayValue = 0;
-            displayString =  "0.";
-            setState(NUM2_INPUTTING);
-            break;
-    }
-}
-
-function startInputFraction(){
-    inputtingFraction = true;
-    const pointButton = document.querySelector("#point");
-    pointButton.disabled = true;
-}
-
-function endInputFraction(){
-    inputtingFraction = false;
-    const pointButton = document.querySelector("#point");
-    pointButton.disabled = false;
-}
-
-function inputEqual() {
-    switch (state) {
-        case INITIAL:
-            return;
-        case NUM1_INPUTTING:
-            setState(INITIAL);
-            return;
-        case OP_INPUTTING:
-            num2 = num1;
-            displayValue = operate(op, num1, num2);
-            displayString =  getResultString(displayValue);
-            setState(INITIAL);
-            break;
-        case NUM2_INPUTTING:
-            num2 = displayValue;
-            displayValue = operate(op, num1, num2);
-            displayString =  getResultString(displayValue);
-            setState(INITIAL);
-            break;
-    }
-}
-
-function inputOperator(input) {
-    disableBackspace();
-    switch (state) {
-        case INITIAL:
-        case NUM1_INPUTTING:
-            num1 = displayValue;
-            op = input;
-            setState(OP_INPUTTING);
-            return;
-        case OP_INPUTTING:
-            op = input;
-            return;
-        case NUM2_INPUTTING:
-            num2 = displayValue;
-            displayValue = operate(op, num1, num2);
-            num1 = displayValue;
-            op = input;
-            setState(OP_INPUTTING);
-            displayString =  getResultString(displayValue);
-            break;
     }
 }
 
@@ -363,43 +199,188 @@ function inputNumber(num){
 }
 
 
+function inputOperator(input) {
+    disableBackspace();
+    switch (state) {
+        case INITIAL:
+        case NUM1_INPUTTING:
+            num1 = displayValue;
+            op = input;
+            setState(OP_INPUTTING);
+            return;
+        case OP_INPUTTING:
+            op = input;
+            return;
+        case NUM2_INPUTTING:
+            num2 = displayValue;
+            displayValue = operate(op, num1, num2);
+            num1 = displayValue;
+            op = input;
+            setState(OP_INPUTTING);
+            displayString =  getResultString(displayValue);
+            break;
+    }
+}
+
+
+function inputEqual() {
+    switch (state) {
+        case INITIAL:
+            return;
+        case NUM1_INPUTTING:
+            setState(INITIAL);
+            return;
+        case OP_INPUTTING:
+            num2 = num1;
+            displayValue = operate(op, num1, num2);
+            displayString =  getResultString(displayValue);
+            setState(INITIAL);
+            break;
+        case NUM2_INPUTTING:
+            num2 = displayValue;
+            displayValue = operate(op, num1, num2);
+            displayString =  getResultString(displayValue);
+            setState(INITIAL);
+            break;
+    }
+}
+
+
+function inputSign() {
+    switch (state) {
+        case INITIAL:
+            displayString = "-0";
+            displayValue = 0;
+            setState(NUM1_INPUTTING);
+            return;
+        case NUM1_INPUTTING:
+            if (displayString[0] === "-") {
+                displayString = displayString.slice(1);
+            } else {
+                displayString = "-" + displayString;
+            }
+            displayValue = parseFloat(displayString);
+            return;
+        case OP_INPUTTING:
+            displayString = "-0";
+            displayValue = 0;
+            setState(NUM2_INPUTTING);
+            return;
+    }
+}
+
+
+function inputBackspace() {
+    switch (state) {
+        case INITIAL:
+        case OP_INPUTTING:
+            return;
+        case NUM1_INPUTTING:
+        case NUM2_INPUTTING:
+            displayString = displayString.slice(0, -1);
+            if (!displayString.includes(".")) {
+                endInputFraction();
+            }
+            if (displayString === "" || displayString === "-") {
+                displayString = "0";
+                displayValue = 0;
+            } else {
+                displayValue = parseFloat(displayString);
+            }
+            return;
+    }
+}
+
+
+function inputPoint() {
+    switch (state) {
+        case INITIAL:
+            startInputFraction();
+            displayValue = 0;
+            displayString =  "0.";
+            setState(NUM1_INPUTTING);
+            return;
+        case NUM1_INPUTTING:
+        case NUM2_INPUTTING:
+            if (inputtingFraction) {
+                return;
+            } else {
+                startInputFraction();
+                displayString =  displayString + ".";
+                return;
+            }
+        case OP_INPUTTING:
+            startInputFraction();
+            displayValue = 0;
+            displayString =  "0.";
+            setState(NUM2_INPUTTING);
+            break;
+    }
+}
+
+
 function updateDisplay() {
     const display = document.querySelector("#display");
     display.textContent = displayString;
 }
 
-function operate(op, num1, num2) {
-    switch (op) {
-        case "+":
-            return add(num1, num2);
-        case "-":
-            return subtract(num1, num2);
-        case "*":
-            return multiply(num1, num2);
-        case "/":
-            return divide(num1, num2);
+
+function enableBackspace() {
+    const backspaceButton = document.querySelector("#backspace");
+    backspaceButton.disabled = false;
+}
+
+
+function disableBackspace() {
+    const backspaceButton = document.querySelector("#backspace");
+    backspaceButton.disabled = true;
+}
+
+
+function startInputFraction(){
+    inputtingFraction = true;
+    const pointButton = document.querySelector("#point");
+    pointButton.disabled = true;
+}
+
+
+function endInputFraction(){
+    inputtingFraction = false;
+    const pointButton = document.querySelector("#point");
+    pointButton.disabled = false;
+}
+
+
+function glowButton(id) {
+    const target = document.querySelector("#" + id);
+    if (target.disabled) {
+        return;
+    }
+    target.classList.add("glowing");
+    const glowClass = Array.from(target.classList).find(x=>x.startsWith("glow-"));
+    if (glowClass) {
+        target.classList.add(glowClass.replace("glow", "glowing"));
     }
 }
 
-function add(num1, num2) {
-    return num1 + num2;
+
+function unglowButton(id){
+    const target = document.querySelector("#" + id);
+    if (target.disabled) {
+        return;
+    }
+    target.classList.remove("glowing");
+    const glowingClass = Array.from(target.classList).find(x=>x.startsWith("glowing-"));
+    if (glowingClass) {
+        target.classList.remove(glowingClass);
+    } 
 }
 
-function subtract(num1, num2) {
-    return num1 - num2;
-}
-
-function multiply(num1, num2) {
-    return num1 * num2;
-}
-
-function divide(num1, num2) {
-    return num1 / num2;
-}
 
 function getDisplayStringLength(){
     return displayString.replace(/[.-]/g, "").length;
 }
+
 
 function getResultString(num){
     if (Number.isNaN(num)) {
@@ -415,13 +396,16 @@ function getResultString(num){
     }
 }
 
+
 function isAbsTooSmall(num){
     return Math.abs(num) < 10 ** -(MAX_DIGIT - 1);
 }
 
+
 function isAbsTooLarge(num){
     return Math.abs(num) > (10 ** MAX_DIGIT - 1);
 }
+
 
 function isWithinMaxDigit(num){
     const str = num.toString().replace(/[.-]/g, "");
@@ -431,17 +415,19 @@ function isWithinMaxDigit(num){
     return true;
 }
 
+
 function roundScientific(num){
     let scientific_abs = Math.abs(num).toExponential();
     if (scientific_abs.length <= MAX_DIGIT) {
         return num.toExponential();
     } else {
         const split = scientific_abs.split(/[.e]/);
-        const nonFractionDigits = (split[0] + "e" + split[2]).length;
-        const fractionDigits = MAX_DIGIT - nonFractionDigits;
-        return num.toExponential(fractionDigits);
+        const nonFractionDigit = (split[0] + "e" + split[2]).length;
+        const fractionDigit = MAX_DIGIT - nonFractionDigit;
+        return num.toExponential(fractionDigit);
     }
 }
+
 
 function roundStandard(num){
     let i = 0;
@@ -459,4 +445,38 @@ function roundStandard(num){
     return rounded
         .replace(/0+$/, "")
         .replace(/\.$/, "");
+}
+
+
+function operate(op, num1, num2) {
+    switch (op) {
+        case "+":
+            return add(num1, num2);
+        case "-":
+            return subtract(num1, num2);
+        case "*":
+            return multiply(num1, num2);
+        case "/":
+            return divide(num1, num2);
+    }
+}
+
+
+function add(num1, num2) {
+    return num1 + num2;
+}
+
+
+function subtract(num1, num2) {
+    return num1 - num2;
+}
+
+
+function multiply(num1, num2) {
+    return num1 * num2;
+}
+
+
+function divide(num1, num2) {
+    return num1 / num2;
 }
