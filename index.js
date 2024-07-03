@@ -268,6 +268,7 @@ function inputSign() {
     switch (state) {
         case INITIAL:
         case NUM1_INPUTTING:
+        case NUM2_INPUTTING:
             if (displayString[0] === "-") {
                 displayString = displayString.slice(1);
             } else {
